@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<!--Button for deleting snippets -->
+<p>Delete Snippet by ID:</p>
+<input id="id"/>
+<button type = "button" onclick = "deleteSnip()">Delete Snippet</button>
+<p id = "p6"></p>
+
+<script>
+  function deleteSnip() {
+    const id = document.getElementById("id").value;
+    if (id.length == 0) {
+      document.getElementById("p6").innerText = "Please enter the id of the snippet you would like to delete";
+    } else {
+      var xhttp = new XMLHttpRequest();
+      var url = `http://localhost:3000/deleteSnippet/${id}`;
+      xhttp.open("POST", url, true);
+      xhttp.send(); 
+    }
+  }
+</script>
+
+<!--Button for generating snippets -->
+<p>Generate Snippets:</p>
+<input id="query"/>
+<select id="category">
+  <option value="unselected">CHOOSE ONE</option>
+  <option value="technology">Technology</option>
+  <option value="business">Business</option>
+  <option value="entertainment">Entertainment</option>
+  <option value="health">Health</option>
+  <option value="science">Science</option>
+  <option value="sports">Sports</option>
+</select>
+<select id="n">
+  <option value="1">1</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+  <option value="5">5</option>
+</select>
+<button type = "button" onclick = "gen()">Generate</button>
+<button type = "button" onclick = "clearSnips()">Delete All Snippets</button>
+<p id = "p5"></p>
+
+<script>
+  function gen() {
+    document.getElementById("p5").innerText = "";
+    var xhttp = new XMLHttpRequest();
+    const query = document.getElementById("query").value;
+    const category = document.getElementById("category").value;
+    const n = document.getElementById("n").value;
+
+    if (query.length == 0 || category == "unselected") {
+      document.getElementById("p5").innerText = "Please enter a query or selected a category";
+    } else {
+      var url = `http://localhost:3000/generateSnippets/${category}/${query}/${n}`;
+      xhttp.open("POST", url, true);
+      xhttp.send(); 
+    }
+  }
+
+  function clearSnips() {
+    var xhttp = new XMLHttpRequest();
+    var url = "http://localhost:3000/clearSnippets";
+      xhttp.open("POST", url, true);
+      xhttp.send(); 
+  }
+</script>
+
+  <!--Button for viewing all Snippets-->
+<button type = "button" onclick = "displaySnips()">View snippets</button>
+<p id = "p1"></p>
+<script>
+  function displaySnips() {
+    document.getElementById("p1").innerText = "";
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "http://localhost:3000/snippets", true);
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4) {
+        var myArr = JSON.parse(this.responseText);
+        var dispo =  myArr.length + " snippets" + "<br />";
+        var count = 1;
+        myArr.forEach(function(snippet) {
+          dispo += "SNIPPET " + count + "<br />";
+          dispo += "Title: " + snippet.title + "<br />";
+          dispo += "Description: " + snippet.description + "<br />";
+          dispo += "Author: " + snippet.author + "<br />";
+          dispo += "Source: " + snippet.sourceId + "<br />";
+          dispo += "URL: " + snippet.url + "<br />";
+          dispo += "Related Topics: " + snippet.relatedTopics + "<br />";
+          dispo += "Publication: " + snippet.publishedAt + "<br />";
+          dispo += "Run Time: " + snippet.runTime + "<br />";
+          dispo += "# of Listens: " + snippet.listenCount + "<br />";
+          dispo += "Word Count: " + snippet.wordCount + "<br />";
+          dispo += "ID: " + snippet._id + "<br />";
+          count ++;
+          dispo += "<br />";
+        });
+        document.getElementById("p1").innerHTML = dispo;
+      }
+    }
+    xhttp.send();
+  }
+</script>
+
+<!--Button for viewing all Users-->
+<button type = "button" onclick = "displayUsers()">View users</button>
+<p id = "p2"></p>
+<script>
+  function displayUsers() {
+    document.getElementById("p2").innerText = "";
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "http://localhost:3000/users", true);
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4) {
+        var myArr = JSON.parse(this.responseText);
+        var dispo =  myArr.length + " users" + "<br />";
+        var count = 1;
+        myArr.forEach(function(user) {
+          dispo += "USER " + count + "<br />";
+          dispo += "Username: " + user.username + "<br />";
+          dispo += "Password: " + user.password + "<br />";
+          dispo += "Active (Logged in): " + user.isLoggedIn + "<br />";
+          dispo += "Admin: " + user.isAdmin + "<br />";
+          dispo += "Industry: " + user.industry + "<br />";
+          dispo += "Interests: " + user.interests + "<br />";
+          dispo += "ID: " + user._id + "<br />";
+          count ++;
+          dispo += "<br />";
+        });
+        document.getElementById("p2").innerHTML = dispo;
+      }
+    }
+    xhttp.send();
+  }
+</script>
+
+<!--Button for viewing specific User -->
+<p>Enter ID of User:</p>
+<input id = "userID"/>
+<button type = "button" onclick = "displayUser()">Search</button>
+<p id = "p3"></p>
+
+<script>
+  function displayUser() {
+    var xhttp = new XMLHttpRequest();
+    if (document.getElementById("userID").value.length == 0) {
+      document.getElementById("p3").innerHTML = "Please enter user ID";
+    }
+    var url = "http://localhost:3000/userById/" + document.getElementById("userID").value;
+    xhttp.open("GET", url, true);
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4) {
+          var user = JSON.parse(this.responseText);
+          if (user.message === "No user found") {
+            document.getElementById("p3").innerHTML = user.message;
+          } else {
+            var dispo = "USER ID: " + user._id + "<br />";
+            dispo += "Username: " + user.username + "<br />";
+            dispo += "Password: " + user.password + "<br />";
+            dispo += "Active (Logged in): " + user.isLoggedIn + "<br />";
+            dispo += "Admin: " + user.isAdmin + "<br />";
+            dispo += "Industry: " + user.industry + "<br />";
+            dispo += "Interests: " + user.interests + "<br />";
+            document.getElementById("p3").innerHTML = dispo;
+          }
+      }
+    }
+    xhttp.send();
+  }
+</script>
+
+<!--Button for viewing specified Snippet -->
+<p>Enter ID of Snippet:</p>
+<input id = "snipID"/>
+<button type = "button" onclick = "displaySnippet()">Search</button>
+<p id = "p4"></p>
+
+<script>
+  function displaySnippet() {
+    var xhttp = new XMLHttpRequest();
+    if (document.getElementById("snipID").value.length == 0) {
+      document.getElementById("p4").innerHTML = "Please enter snippet ID";
+    }
+    var url = "http://localhost:3000/snippetById/" + document.getElementById("snipID").value;
+    xhttp.open("GET", url, true);
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4) {
+        var snippet = JSON.parse(this.responseText);
+        if (snippet.message === "No snippet found") {
+          document.getElementById("p4").innerHTML = snippet.message;
+        } else {
+          var dispo = "SNIPPET ID: " + snippet._id + "<br />";
+          dispo += "Title: " + snippet.title + "<br />";
+          dispo += "Description: " + snippet.description + "<br />";
+          dispo += "Author: " + snippet.author + "<br />";
+          dispo += "Source: " + snippet.sourceId + "<br />";
+          dispo += "URL: " + snippet.url + "<br />";
+          dispo += "Related Topics: " + snippet.relatedTopics + "<br />";
+          dispo += "Publication: " + snippet.publishedAt + "<br />";
+          dispo += "Run Time: " + snippet.runTime + "<br />";
+          dispo += "# of Listens: " + snippet.listenCount + "<br />";
+          dispo += "Word Count: " + snippet.wordCount + "<br />";
+          document.getElementById("p4").innerHTML = dispo;
+        }
+      }
+    }
+    xhttp.send();
+  }
+</script>
+
+
+</body>
+
+
+
+</html>

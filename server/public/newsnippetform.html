@@ -1,0 +1,44 @@
+<html>
+Welcome to the Chatter Web Interface!
+<br/>
+<br/>
+
+<!-- new snippet form -->
+
+You must have admin privileges to add new snippets:
+<br/>
+
+<form action="/submit" method="post">
+
+Link: <input name="link">
+<p>
+Title: <input name="title">
+<p>
+Source: <input name="source">
+<p>
+
+<input type="submit" value="Add New Snippet">
+
+</form>
+
+
+<!-- list all snippets -->
+<br/>
+<br/>
+<br/>
+
+<form action="/list" method="post">
+<input type="submit" value="List All Snippets">
+</form>
+
+
+<!-- log out functionality -->
+<br/>
+<br/>
+<br/>
+
+<form action="/logout" method="post">
+<input type="submit" value="Log Out">
+</form>
+
+<html>

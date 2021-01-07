@@ -1,0 +1,52 @@
+{
+    "UserProfiles": [
+        {
+            "id": "1001",
+            "username": "tony_soprano_9",
+            "password": "password123",
+            "logged_in": "FALSE",
+            "industry": "finance",
+            "interests": ["finance","food","world","nfl","nba"]
+        },
+        {
+            "id": "1002",
+            "username": "carmela_soprano",
+            "password": "housemaid7",
+            "logged_in": "TRUE",
+            "industry": "houseworker",
+            "interests": ["f","health","coronavirus","family"]
+        },
+        {
+            "id": "1003",
+            "username": "z_richieaprile_z",
+            "password": "rarara48",
+            "logged_in": "FALSE",
+            "industry": "software",
+            "interests": ["nba","basketball"]
+        },
+        {
+            "id": "1004",
+            "username": "furio_giunta123",
+            "password": "iloveitaly90",
+            "logged_in": "TRUE",
+            "industry": "healthcare",
+            "interests": ["nfl","movies"]
+        },
+        {
+            "id": "1005",
+            "username": "artiebucco",
+            "password": "pastaman12",
+            "logged_in": "TRUE",
+            "industry": "dining",
+            "interests": ["oil","finance","world"]
+        },
+        {
+            "id": "1006",
+            "username": "sdante",
+            "password": "moneytalks808",
+            "logged_in": "FALSE",
+            "industry": "law",
+            "interests": ["world","nba","nfl"]
+        }
+    ]
+}
